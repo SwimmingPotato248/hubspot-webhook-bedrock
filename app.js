@@ -43,15 +43,18 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", async (req, res) => {
+  const { url, method, headers, hostname } = req;
   const events = req.body;
 
-  const { actorID, threadID, channelID, message } = events;
+  const signatureVersion = headers["x-hubspot-signature-version"];
+  if (signatureVersion === "v1") {
+  }
 
   const command = new InvokeAgentCommand({
     agentId: BEDROCK_AGENT_ID,
     agentAliasId: BEDROCK_AGENT_ALIAS_ID,
-    sessionId: channelID,
-    inputText: message,
+    sessionId: events.session.conversationId,
+    inputText: events.userMessage.message,
   });
 
   try {
@@ -72,7 +75,7 @@ app.post("/", async (req, res) => {
       method: "POST",
       hostname: "api.hubspot.com",
       port: null,
-      path: `conversations/v3/conversations/threads/${threadID}/messages`,
+      path: `conversations/v3/conversations/threads/${events.session.properties.CONVERSATION.threadID.value}/messages`,
       headers: {
         accept: "application/json",
         "content-type": "application/json",
@@ -83,6 +86,7 @@ app.post("/", async (req, res) => {
     const hubspotReq = http
       .request(options)
       .write(JSON.stringify({ type: "MESSAGE", text: completion }));
+    res.status(200).end();
   } catch (error) {
     console.error(error);
   }
