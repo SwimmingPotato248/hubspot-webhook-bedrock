@@ -1,6 +1,8 @@
 const http = require("https");
 const crypto = require("crypto");
 
+const fs = require("fs");
+
 const express = require("express");
 const app = express();
 const hubspot = require("@hubspot/api-client");
@@ -45,6 +47,11 @@ app.get("/", (req, res) => {
 app.post("/", async (req, res) => {
   const { url, method, headers, hostname } = req;
   const events = req.body;
+  fs.writeFileSync(
+    "./runtime.log",
+    JSON.stringify({ url, method, headers, hostname, events }),
+    { mode: "a", encoding: "utf-8" }
+  );
 
   const signatureVersion = headers["x-hubspot-signature-version"];
   if (signatureVersion === "v1") {
