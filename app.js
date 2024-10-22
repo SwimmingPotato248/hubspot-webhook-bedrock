@@ -12,6 +12,7 @@ const {
 } = require("@aws-sdk/client-bedrock-agent-runtime");
 
 const bodyParser = require("body-parser");
+const { threadId } = require("worker_threads");
 
 const PORT = 3000;
 // const CLIENT_ID = process.env.HUBSPOT_CLIENT_ID;
@@ -82,7 +83,7 @@ app.post("/", async (req, res) => {
       method: "POST",
       hostname: "api.hubapi.com",
       port: null,
-      path: `conversations/v3/conversations/threads/${events.session.conversationId}//messages`,
+      path: `conversations/v3/conversations/threads/${events.session.conversationId}/messages`,
       headers: {
         accept: "application/json",
         "content-type": "application/json",
@@ -99,6 +100,7 @@ app.post("/", async (req, res) => {
         senderActorId: "A-65920464",
         channelId: "1000",
         channelAccountId: "751411551",
+        threadId: events.session.conversationId,
       })
     );
     hubspotReq.end();
