@@ -50,7 +50,7 @@ app.post("/", async (req, res) => {
   fs.writeFileSync(
     "./runtime.log",
     JSON.stringify({ url, method, headers, hostname, events }),
-    { mode: "a", encoding: "utf-8" }
+    { flag: "a", encoding: "utf-8" }
   );
 
   const signatureVersion = headers["x-hubspot-signature-version"];
