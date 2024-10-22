@@ -1,6 +1,6 @@
 const http = require("https");
 const crypto = require("crypto");
-
+require("dotenv").config();
 const fs = require("fs");
 
 const express = require("express");
