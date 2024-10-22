@@ -80,9 +80,9 @@ app.post("/", async (req, res) => {
 
     const options = {
       method: "POST",
-      hostname: "api.hubspot.com",
+      hostname: "api.hubapi.com",
       port: null,
-      path: `conversations/v3/conversations/threads/${events.session.conversationId}/messages`,
+      path: `conversations/v3/conversations/threads/${events.session.conversationId}//messages`,
       headers: {
         accept: "application/json",
         "content-type": "application/json",
@@ -90,9 +90,18 @@ app.post("/", async (req, res) => {
       },
     };
 
-    const hubspotReq = http
-      .request(options)
-      .write(JSON.stringify({ type: "MESSAGE", text: completion }));
+    const hubspotReq = http.request(options);
+
+    hubspotReq.write(
+      JSON.stringify({
+        type: "MESSAGE",
+        text: completion,
+        senderActorId: "A-65920464",
+        channelId: "1000",
+        channelAccountId: "751411551",
+      })
+    );
+    hubspotReq.end();
     res.status(200).end();
   } catch (error) {
     console.error(error);
