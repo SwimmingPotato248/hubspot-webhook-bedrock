@@ -82,7 +82,7 @@ app.post("/", async (req, res) => {
       method: "POST",
       hostname: "api.hubspot.com",
       port: null,
-      path: `conversations/v3/conversations/threads/${events.session.properties.CONVERSATION.threadID.value}/messages`,
+      path: `conversations/v3/conversations/threads/${events.session.properties.CONVERSATION.threadId.value}/messages`,
       headers: {
         accept: "application/json",
         "content-type": "application/json",
