@@ -49,7 +49,7 @@ app.post("/", async (req, res) => {
   const events = req.body;
   fs.writeFileSync(
     "./runtime.log",
-    JSON.stringify({ url, method, headers, hostname, events }),
+    `${JSON.stringify({ url, method, headers, hostname, events })}\n`,
     { flag: "a", encoding: "utf-8" }
   );
 
@@ -82,7 +82,7 @@ app.post("/", async (req, res) => {
       method: "POST",
       hostname: "api.hubspot.com",
       port: null,
-      path: `conversations/v3/conversations/threads/${events.session.properties.CONVERSATION.threadId.value}/messages`,
+      path: `conversations/v3/conversations/threads/${events.session.conversationId}/messages`,
       headers: {
         accept: "application/json",
         "content-type": "application/json",
