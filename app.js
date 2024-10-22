@@ -49,22 +49,22 @@ app.post("/", async (req, res) => {
   const events = req.body;
   fs.writeFileSync(
     "./runtime.log",
-    `${JSON.stringify({ url, method, headers, hostname, events })}\n`,
+    `\n${JSON.stringify({ url, method, headers, hostname, events })}`,
     { flag: "a", encoding: "utf-8" }
   );
 
-  const signatureVersion = headers["x-hubspot-signature-version"];
-  if (signatureVersion === "v1") {
-  }
-
-  const command = new InvokeAgentCommand({
-    agentId: BEDROCK_AGENT_ID,
-    agentAliasId: BEDROCK_AGENT_ALIAS_ID,
-    sessionId: events.session.conversationId,
-    inputText: events.userMessage.message,
-  });
-
   try {
+    const signatureVersion = headers["x-hubspot-signature-version"];
+    if (signatureVersion === "v1") {
+    }
+
+    const command = new InvokeAgentCommand({
+      agentId: BEDROCK_AGENT_ID,
+      agentAliasId: BEDROCK_AGENT_ALIAS_ID,
+      sessionId: events.session.conversationId,
+      inputText: events.userMessage.message,
+    });
+
     let completion = "";
     const response = await bedrockClient.send(command);
 
