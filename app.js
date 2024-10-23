@@ -97,10 +97,9 @@ app.post("/", async (req, res) => {
       JSON.stringify({
         type: "MESSAGE",
         text: completion,
-        senderActorId: "A-65920464",
+        senderActorId: events.session.vid,
         channelId: "1000",
         channelAccountId: "751411551",
-        threadId: events.session.conversationId,
       })
     );
     hubspotReq.end();
