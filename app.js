@@ -97,7 +97,7 @@ app.post("/", async (req, res) => {
       JSON.stringify({
         type: "MESSAGE",
         text: completion,
-        senderActorId: events.session.vid,
+        senderActorId: "A-65920464",
         channelId: "1000",
         channelAccountId: "751411551",
       })
